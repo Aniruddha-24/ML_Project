@@ -42,7 +42,8 @@ To check the git status
 '''
 git status
 '''
-To cgeck all version maintained by git
+
+To check all version maintained by git
 '''
 git log
 '''
@@ -51,5 +52,16 @@ git log
 To create version/commit all changes by git 
 '''
 git commit -m "message"
+'''
+
+To send version/changes to github
+'''
+git push origin main
+'''
+
+
+To check remote url 
+'''
+git remote -v
 '''
 
