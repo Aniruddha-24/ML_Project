@@ -7,18 +7,27 @@ from housing.util.util import read_yaml_file
 from housing.constant import *
 import sys,os
 
-
+ROOT_DIR
 
 
 
 
 class Configuration:
 
- 
+ def __init__(self,
+        config_file_path=CONFIG_FILE_PATH,
+        current_time_stamp = CURRENT_TIME_STAMP
+    ) -> None:
+    try:
+        self.config_info = read_yaml_file(file_path=config_file_path)
+        self.training_pipeline_config = self.get_data_training_pipeline_config()
+        self.time_stamp = current_time_stamp 
+    except Exception as e:
+        raise HousingException(e,sys) from e
 
     def get_data_ingestion_config(self) -> DataIngestionConfig:
         try:
-            self.config_info
+            self
         except Exception as e:
             raise HousingException(e,sys) from e
 
@@ -38,7 +47,15 @@ class Configuration:
         pass
 
     def get_data_training_pipeline_config(self) -> TrainingPipelineConfig:
-        pass
-        
+        try:
+            training_pipeline_config=self.config_info[TRAINING_PIPELINE_CONFIG_KEY]
+            artifact_dir=os.path.join(ROOT_DIR,
+            training_pipeline_config[TRAINING_PIPELINE_NAME_KEY],
+            training_pipeline_config[TRAINING_PIPELINE_ARTIFACT_DIR_KEY]
+            )
 
-           
+            training_pipeline_config=TrainingPipelineConfig(artifact_dir=artifact_dir)
+            logging.info("Training pipeline config : {training_pipeline_config}")
+            return training_pipeline_config
+        except Exception as e:
+            raise HousingException(e,sys) from e
